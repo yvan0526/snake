@@ -1,0 +1,10 @@
+[package]
+name = "snake"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.51", features = ["derive"] }
+termion = "4.0.5"
+rand = "0.10.0-rc.8"
+clap-num = "1.2.0"
