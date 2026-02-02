@@ -24,7 +24,7 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    let sleep = Duration::from_millis(200 - ((args.difficulty as u64) * 10));
+    let sleep = Duration::from_millis(200 - (((args.difficulty as u64) - 1) * 10));
     let (width, height) = terminal_size().unwrap();
 
     {
