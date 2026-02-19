@@ -28,11 +28,11 @@ impl Snake {
     pub fn new(x: u16, y: u16, size: u16) -> Self {
         let mut body: Vec<Cell> = vec![Cell { x, y }];
         for i in 1..size {
-            body.push(Cell { x, y: y - i });
+            body.push(Cell { x: x - i, y });
         }
 
         Self {
-            direction: Direction::Down,
+            direction: Direction::Right,
             body,
             last_cell: Cell { x, y: y - size - 1 },
         }
