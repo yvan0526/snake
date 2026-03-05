@@ -26,7 +26,9 @@ pub struct Snake {
 
 impl Snake {
     pub fn new(x: u16, y: u16, size: u16) -> Self {
+        // Ajout de la tête
         let mut body: Vec<Cell> = vec![Cell { x, y }];
+        // Ajout du corps vers la gauche
         for i in 1..size {
             body.push(Cell { x: x - i, y });
         }

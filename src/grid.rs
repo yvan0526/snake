@@ -36,6 +36,7 @@ pub struct Grid {
 
 impl Grid {
     pub fn new(width: u16, height: u16, has_wall: bool, difficulty: u8) -> Self {
+        // Serpent au milieu de la grille
         let snake = Snake::new(width / 2, height / 2, 2);
 
         let mut grid = Self {
@@ -47,6 +48,7 @@ impl Grid {
             snake,
         };
 
+        // Nouvelle pomme à une position aléatoire
         grid.new_apple();
         grid
     }

@@ -5,6 +5,7 @@ use crate::grid::{GameState, Grid};
 use clap::Parser;
 use clap_num::number_range;
 use std::io::{Stdout, Write, stdout};
+use std::process::exit;
 use std::thread;
 use std::time::Duration;
 use termion::input::TermRead;
@@ -30,6 +31,12 @@ fn main() {
 
     // Taille du terminal
     let (width, height) = terminal_size().unwrap();
+
+    // Taille minimale du terminal
+    if width < 32 || height < 6 {
+        eprintln!("Terminal minimal size: 32x6, current size: {width}x{height}");
+        exit(1);
+    }
 
     // Nouvelle portée pour l'écran alternatif
     {
@@ -109,6 +116,8 @@ fn main() {
         }
         reset_screen(&mut screen);
     }
+
+    exit(0);
 }
 
 fn init_screen(screen: &mut AlternateScreen<RawTerminal<Stdout>>) {
