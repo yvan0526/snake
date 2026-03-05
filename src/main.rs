@@ -34,7 +34,7 @@ fn main() {
 
     // Taille minimale du terminal
     if width < 32 || height < 6 {
-        eprintln!("Terminal minimal size: 32x6, current size: {width}x{height}");
+        eprintln!("Cannot run the game! Minimal terminal size: 32x6, current size: {width}x{height}");
         exit(1);
     }
 
