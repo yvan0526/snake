@@ -70,7 +70,12 @@ impl Snake {
         self.body.push(self.last_cell);
     }
 
-    pub fn update_position(&mut self, grid_width: u16, grid_height: u16, grid_has_wall: bool) -> bool {
+    pub fn update_position(
+        &mut self,
+        grid_width: u16,
+        grid_height: u16,
+        grid_has_wall: bool,
+    ) -> bool {
         // Position de la nouvelle tête
         let mut new_head = Cell {
             x: self.body[0].x,
@@ -111,9 +116,12 @@ impl Snake {
 
         // Game over si la grille a des murs et que la nouvelle tête en touche un
         if grid_has_wall
-            && (new_head.x <= 1 || new_head.x >= grid_width - 1
-            || new_head.y <= 2 || new_head.y >= grid_height - 1) {
-            return false
+            && (new_head.x <= 1
+                || new_head.x >= grid_width - 1
+                || new_head.y <= 2
+                || new_head.y >= grid_height - 1)
+        {
+            return false;
         }
 
         // Game over si le nouvelle tête est sur une partie du corps sauf le bout de la queue à enlever
@@ -161,7 +169,10 @@ impl Snake {
 
     pub fn to_clean(&self) -> (u16, u16) {
         // Bout de la queue à effacer
-        (self.body[self.body.len() - 1].x, self.body[self.body.len() - 1].y)
+        (
+            self.body[self.body.len() - 1].x,
+            self.body[self.body.len() - 1].y,
+        )
     }
 
     pub fn is_on(&self, x: u16, y: u16) -> bool {

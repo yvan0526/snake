@@ -31,7 +31,7 @@ pub struct Grid {
     apple: Apple,
     has_wall: bool,
     to_clean: (u16, u16),
-    difficulty: u8
+    difficulty: u8,
 }
 
 impl Grid {
@@ -61,7 +61,6 @@ impl Grid {
         if self.has_wall {
             rand_apple_x = (2..self.size.width - 1).collect();
             rand_apple_y = (3..self.size.height - 1).collect();
-
         } else {
             rand_apple_x = (1..self.size.width).collect();
             rand_apple_y = (2..self.size.height).collect();
@@ -89,14 +88,16 @@ impl Grid {
                 "{}{} ",
                 termion::cursor::Goto(i, 1),
                 color::Bg(color::LightYellow)
-            ).unwrap();
+            )
+            .unwrap();
             // Ligne du bas
             write!(
                 screen,
                 "{}{} ",
                 termion::cursor::Goto(i, self.size.height + 1),
                 color::Bg(color::LightYellow)
-            ).unwrap();
+            )
+            .unwrap();
         }
 
         for i in 2..self.size.height {
@@ -106,14 +107,16 @@ impl Grid {
                 "{}{} ",
                 termion::cursor::Goto(1, i),
                 color::Bg(color::LightYellow)
-            ).unwrap();
+            )
+            .unwrap();
             // Colone de droite
             write!(
                 screen,
                 "{}{} ",
                 termion::cursor::Goto((self.size.width + 1) * 2, i),
                 color::Bg(color::LightYellow)
-            ).unwrap();
+            )
+            .unwrap();
         }
 
         // Score
@@ -123,23 +126,20 @@ impl Grid {
             termion::cursor::Goto(2, 1),
             color::Bg(color::LightYellow),
             color::Fg(color::Black)
-        ).unwrap();
+        )
+        .unwrap();
 
         // Score à faire
         let score_to_win = self.score_to_win();
-        let score_to_win_pos =
-            if score_to_win / 1000 > 0 { 14 }
-            else if score_to_win / 100 > 0 { 13 }
-            else { 12 };
-
         write!(
             screen,
             "{}{}{}/{}",
-            termion::cursor::Goto(score_to_win_pos, 1),
+            termion::cursor::Goto(11 + Grid::get_num_length(score_to_win), 1),
             color::Bg(color::LightYellow),
             color::Fg(color::Black),
             score_to_win
-        ).unwrap();
+        )
+        .unwrap();
 
         // Difficulté
         write!(
@@ -148,7 +148,8 @@ impl Grid {
             termion::cursor::Goto(2, self.size.height),
             color::Bg(color::LightYellow),
             color::Fg(color::Black)
-        ).unwrap();
+        )
+        .unwrap();
 
         screen.flush().unwrap();
     }
@@ -161,14 +162,16 @@ impl Grid {
                 "{}{} ",
                 termion::cursor::Goto(i, 2),
                 color::Bg(color::LightBlack)
-            ).unwrap();
+            )
+            .unwrap();
             // Mur du bas
             write!(
                 screen,
                 "{}{} ",
                 termion::cursor::Goto(i, self.size.height - 1),
                 color::Bg(color::LightBlack)
-            ).unwrap();
+            )
+            .unwrap();
         }
 
         for i in 3..self.size.height - 1 {
@@ -178,14 +181,16 @@ impl Grid {
                 "{}{}  ",
                 termion::cursor::Goto(2, i),
                 color::Bg(color::LightBlack)
-            ).unwrap();
+            )
+            .unwrap();
             // Mur de droite
             write!(
                 screen,
                 "{}{}   ",
                 termion::cursor::Goto(self.size.width * 2 - 2, i),
                 color::Bg(color::LightBlack)
-            ).unwrap();
+            )
+            .unwrap();
         }
 
         screen.flush().unwrap();
@@ -196,11 +201,15 @@ impl Grid {
         write!(
             screen,
             "{}{}{}{}",
-            termion::cursor::Goto(10, 1),
+            termion::cursor::Goto(
+                11 + Grid::get_num_length(self.score_to_win()) - Grid::get_num_length(self.score()),
+                1
+            ),
             color::Bg(color::LightYellow),
             color::Fg(color::Black),
             self.score()
-        ).unwrap();
+        )
+        .unwrap();
 
         // Valeur de la difficulté
         write!(
@@ -210,7 +219,8 @@ impl Grid {
             color::Bg(color::LightYellow),
             color::Fg(color::Black),
             self.difficulty()
-        ).unwrap();
+        )
+        .unwrap();
 
         // Pomme
         write!(
@@ -219,7 +229,8 @@ impl Grid {
             termion::cursor::Goto(self.apple.x * 2, self.apple.y),
             color::Bg(color::Reset),
             color::Fg(color::Red)
-        ).unwrap();
+        )
+        .unwrap();
 
         // Serpent
         self.snake.show(screen);
@@ -250,8 +261,7 @@ impl Grid {
         self.to_clean = self.snake.to_clean();
 
         // Déplace le serpent et détermine s'il meurt
-        let died =
-            !self
+        let died = !self
             .snake
             .update_position(self.size.width, self.size.height, self.has_wall);
 
@@ -312,5 +322,16 @@ impl Grid {
             self.difficulty += 1;
         }
     }
-}
 
+    fn get_num_length(num: u16) -> u16 {
+        if num / 1000 > 0 {
+            4
+        } else if num / 100 > 0 {
+            3
+        } else if num / 10 > 0 {
+            2
+        } else {
+            1
+        }
+    }
+}

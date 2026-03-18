@@ -22,7 +22,7 @@ struct Args {
     #[arg(short, long, default_value_t = 1, value_parser=between_1_and_20)]
     difficulty: u8,
     #[arg(short, long, default_value_t = false)]
-    wall: bool
+    wall: bool,
 }
 
 fn main() {
@@ -34,7 +34,9 @@ fn main() {
 
     // Taille minimale du terminal
     if width < 32 || height < 6 {
-        eprintln!("Cannot run the game! Minimal terminal size: 32x6, current size: {width}x{height}");
+        eprintln!(
+            "Cannot run the game! Minimal terminal size: 32x6, current size: {width}x{height}"
+        );
         exit(1);
     }
 
@@ -75,7 +77,7 @@ fn main() {
                     // Met fin à la partie
                     termion::event::Key::Esc => {
                         game_state = GameState::GameOver;
-                    },
+                    }
                     // Met le jeu en pause ou reprend la partie en pause
                     termion::event::Key::Char(' ') => {
                         if game_state == GameState::Pause {
@@ -83,15 +85,15 @@ fn main() {
                         } else {
                             game_state = GameState::Pause;
                         }
-                    },
+                    }
                     // Augmente la difficulté
                     termion::event::Key::PageDown => {
                         grid.difficulty_down();
-                    },
+                    }
                     // Diminue la difficulté
                     termion::event::Key::PageUp => {
                         grid.difficulty_up();
-                    },
+                    }
                     // Défini la direction du serpent
                     _ => grid.control(key),
                 }
