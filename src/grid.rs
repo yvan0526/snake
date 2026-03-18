@@ -324,14 +324,13 @@ impl Grid {
     }
 
     fn get_num_length(num: u16) -> u16 {
-        if num / 1000 > 0 {
-            4
-        } else if num / 100 > 0 {
-            3
-        } else if num / 10 > 0 {
-            2
-        } else {
-            1
+        let mut i = 1;
+        let mut d = 10;
+        while num / d > 0 {
+            d *= 10;
+            i += 1;
         }
+
+        i
     }
 }
